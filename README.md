@@ -1,4 +1,4 @@
-# Vendor Management System (VMS) - Microservices Portfolio
+# Vendor Management System (VMS)
 
 Ini adalah aplikasi Vendor Management System yang dibangun menggunakan arsitektur _microservices_ (Frontend dan Backend terpisah) berbasis Python Flask, Webix (UI), MongoDB, dan Redis. Aplikasi ini telah sepenuhnya dikonfigurasi untuk berjalan di atas _container_ menggunakan Docker / Podman.
 
@@ -31,8 +31,8 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan aplikasi secara lokal di me
 Buka terminal Anda (disarankan menggunakan terminal Linux/WSL untuk performa terbaik) dan jalankan perintah berikut:
 
 ```bash
-git clone https://github.com/username-anda/nama-repo-portofolio.git
-cd nama-repo-portofolio
+git clone https://github.com/Kur-N/vendor-management-system.git
+cd vendor-management-system
 ```
 
 _(Ganti URL di atas dengan URL repository GitHub Anda yang sebenarnya)_
