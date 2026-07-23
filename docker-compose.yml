@@ -1,28 +1,50 @@
 version: '3.8'
 
 services:
+  # 1. Service Database MongoDB
   mongo:
     image: mongo:latest
+    container_name: kapita_mongo
     ports:
       - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
 
+  # 2. Service Redis Cache
   redis:
     image: redis:alpine
+    container_name: kapita_redis
     ports:
       - "6379:6379"
+    restart: unless-stopped
 
+  # 3. Service Backend Flask
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+    container_name: kapita_backend
     ports:
       - "5000:5000"
     env_file:
-      - .env  # Backend otomatis mendapat URI_MONGO, REDIS_HOST, dll
+      - .env
+    depends_on:
+      - mongo
+      - redis
+    restart: unless-stopped
 
+  # 4. Service Frontend Webix
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+    container_name: kapita_frontend
     ports:
-      - "8080:8080" # Sesuaikan port yang Anda inginkan
+      - "8080:8080"
     env_file:
-      - .env  # Frontend otomatis mendapat API_URL, APP_ENV, REDIS_HOST, dll
+      - .env
     depends_on:
       - backend
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
