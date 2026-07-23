@@ -1,0 +1,46 @@
+/* Gaya umum untuk card */
+.card {
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+    transition: transform 0.2s;
+}
+
+/* Gaya card aktif */
+.card.active {
+    background-color: #e0f7e9;
+    border-left: 5px solid #28a745;
+}
+
+/* Gaya card tidak aktif */
+.card.inactive {
+    background-color: #fbeaea;
+    border-left: 5px solid #dc3545;
+}
+
+/* Efek hover pada card */
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Gaya teks */
+.name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    white-space: nowrap; /* Jangan buat teks melanjutkan ke baris berikutnya */
+    overflow: hidden;    /* Sembunyikan teks yang melebihi */
+    text-overflow: ellipsis; /* Tambahkan '...' pada teks yang terpotong */
+    width: 100%;  
+}
+
+.info {
+    font-size: 0.95em;
+    margin-bottom: 5px;
+    overflow: hidden;    /* Sembunyikan teks yang melebihi */
+    text-overflow: ellipsis; /* Tambahkan '...' pada teks yang terpotong */
+    white-space: nowrap; /* Jangan buat teks melanjutkan ke baris berikutnya */
+    width: 100%; 
+}
