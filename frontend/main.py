@@ -1,7 +1,6 @@
 from flask import Flask, render_template, url_for, request, redirect, jsonify, make_response, Response
 import requests
 import random, string
-from bson.objectid import ObjectId
 import logging
 
 from common.connectredis import RedisClient
@@ -155,18 +154,15 @@ def vendorById(id):
             return make_response(jsonify(response), 401)
         response = requests.delete(f"{API_URL}/vendor/{id}", params={'sessionKey':cookieData})
         return make_response(response.json(), response.status_code)
-    try:
-        ObjectId(id)
-    except Exception as e:
-        logging.error(f"Error ObjectId: {e}")
-        # response['status'] = False
-        # response['message'] = "Vendor Tidak ditemukan."
-        # return redirect(url_for('vendor')), 404
-        # redirect ke vendor
-        response = Response(status=302)
-        response.headers['Location'] = url_for('vendor')
-        return response
+    # 1. Langsung request data ke backend menggunakan ID (berupa string)
     response = requests.get(f"{API_URL}/vendor/{id}", params={'sessionKey':cookieData})
+    
+    # 2. Cek apakah backend menolak ID tersebut (format salah / tidak ketemu)
+    if response.status_code == 400 or response.status_code == 404:
+        logging.error(f"Vendor ID tidak valid atau tidak ditemukan di backend")
+        return redirect(url_for('vendor'))
+        
+    # 3. Jika sukses (status 200), render template
     data = response.json()
     return render_template("vendor-detail.html", data=data)
 
