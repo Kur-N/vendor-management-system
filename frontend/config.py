@@ -35,8 +35,8 @@ def setup_logging():
 # Mapping URL cadangan jika .env tidak menyebutkan API_URL
 API_URL_MAPPING = {
     "development": "http://backend:5000",          # Menunjuk ke container Podman di lokal
-    "beta": "https://api-beta.kapita.com", # Contoh URL untuk server testing
-    "production": "https://api.kapita.com" # Contoh URL untuk live production
+    "beta": "https://api-beta.example.com", # Contoh URL untuk server testing
+    "production": "https://api.example.com" # Contoh URL untuk live production
 }
 
 # Prioritas 1: Ambil dari .env (docker-compose)
