@@ -5,6 +5,7 @@ from controller.vendorcontroller import VendorController, VendorBranch, VendorEq
 from controller.branchcontroller import BranchController
 from controller.bankcontroller import BankController
 from controller.usercontroller import UserController, CheckPassword
+from config import APP_ENV
 
 app = Flask(__name__)
 api = Api(app)
@@ -22,4 +23,8 @@ api.add_resource(CheckPassword,"/check-password/<string:user_id>")
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Debug aktif hanya jika di environment development
+    is_debug = APP_ENV == "development"
+    
+    # Bind ke 0.0.0.0 agar bisa diakses dari luar container (Docker/Podman)
+    app.run(host='0.0.0.0', port=5000, debug=is_debug)
