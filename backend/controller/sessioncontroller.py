@@ -1,21 +1,46 @@
-from flask import Blueprint, request, jsonify
-# Sesuaikan import Redis/config Anda di backend
-import commonRedis # atau modul redis backend Anda
+from flask_restful import Resource
+from flask import request
 
-session_bp = Blueprint('session_bp', __name__)
+from common.connectredis import RedisClient
+from common.decorator import login_required
 
-@session_bp.route("/session", methods=['GET'])
-def get_session():
-    # Mengambil cookie KAPITA yang dikirim dari frontend
-    cookie_data = request.cookies.get('KAPITA')
-    
-    if not cookie_data:
-        return jsonify({'data': None, 'message': "Cookie KAPITA tidak ditemukan"}), 400
+commonRedis = RedisClient()
+
+class SessionController(Resource):
+    @login_required
+    def get(self):
+        response = {
+            'status': False,
+            'message': '',
+            'data': None
+        }
         
-    # Ambil data dari Redis di backend
-    session_data, status = commonRedis.getCookieData(cookieData=cookie_data)
-    
-    if status:
-        return jsonify({'data': session_data, 'message': "Berhasil get session data"}), 200
+        sessionKey = request.args.get('sessionKey')
+        resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
         
-    return jsonify({'data': None, 'message': "Gagal get session data atau sesi kedaluwarsa"}), 400
+        if not resultVerify:
+            response['status'] = False
+            response['message'] = 'Unauthorized.'
+            return response, 403
+            
+        # Mengambil cookie KAPITA yang dikirim dari client/frontend
+        cookie_data = request.cookies.get('KAPITA')
+        
+        if not cookie_data:
+            response['status'] = False
+            response['message'] = 'Cookie KAPITA tidak ditemukan.'
+            return response, 400
+            
+        # Ambil data dari Redis menggunakan cookie data sebagai key/parameter
+        session_data, status = commonRedis.getCookieData(cookieData=cookie_data)
+        
+        if status:
+            return {
+                'status': True,
+                'message': 'Berhasil get session data',
+                'data': session_data
+            }, 200
+            
+        response['status'] = False
+        response['message'] = 'Gagal get session data atau sesi kedaluwarsa.'
+        return response, 400
