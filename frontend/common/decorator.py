@@ -11,7 +11,7 @@ def login_required(f):
         cookieData = request.cookies.get('KAPITA')
         if not cookieData or not commonRedis.checkCookieData(cookieData=cookieData):
             commonRedis.deleteCookieData(cookieData=cookieData)
-            return redirect(url_for('login'))
+            return redirect(url_for('auth.login'))
         return f(*args, **kwargs)
     return decorated_function
 
