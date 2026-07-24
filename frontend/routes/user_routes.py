@@ -23,7 +23,7 @@ def user():
         return make_response(response.json(), response.status_code)
         
     response = requests.get(f"{API_URL}/user", params={'sessionKey': cookieData})
-    return render_template('user.html', data=response.json())
+    return render_template('dashboard/user.html', data=response.json())
 
 @user_bp.route("/user/<id>", methods=['PUT', 'DELETE'])
 @login_required

@@ -20,14 +20,14 @@ def dashboard():
         bank = requests.get(f"{API_URL}/bank", params={'sessionKey': cookieData})
         user = requests.get(f"{API_URL}/user", params={'sessionKey': cookieData})
         
-        return render_template('index.html', 
+        return render_template('dashboard/index.html', 
                                vendor=vendor.json(), 
                                branch=branch.json(), 
                                bank=bank.json(), 
                                user=user.json())
     except Exception as e:
         logging.error(f"Error fetching dashboard data: {e}")
-        return render_template('index.html', vendor={}, branch={}, bank={}, user={})
+        return render_template('dashboard/index.html', vendor={}, branch={}, bank={}, user={})
 
 @dashboard_bp.route("/session", methods=['GET'])
 @login_required

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//cdn.webix.com/materialdesignicons/5.8.95/css/materialdesignicons.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.css" type="text/css">
+    <script src="https://cdn.webix.com/edge/webix.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}">
+    <title>Cabang</title>
+</head>
+<body>
+    <script>
+        // Meneruskan data JSON dari backend ke variabel global JavaScript
+        const branchData = JSON.parse('{{ data | tojson | safe }}');
+    </script>
+    <!-- Memanggil file JavaScript eksternal -->
+    <script src="{{ url_for('static', filename='branch.js') }}"></script>
+</body>
+</html>

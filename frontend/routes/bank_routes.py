@@ -29,7 +29,7 @@ def bank():
         return make_response(response.json(), response.status_code)
 
     response = requests.get(f"{API_URL}/bank", params={'sessionKey': cookieData})
-    return render_template('bank.html', data=response.json())
+    return render_template('dashboard/bank.html', data=response.json())
 
 @bank_bp.route("/bank/<id>", methods=['DELETE', 'PUT'])
 @login_required

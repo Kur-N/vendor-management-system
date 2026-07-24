@@ -29,7 +29,7 @@ def vendor():
         return make_response(response.json(), response.status_code)
         
     response = requests.get(f"{API_URL}/vendor", params={'sessionKey': cookieData})
-    return render_template('vendor.html', data=response.json())
+    return render_template('dashboard/vendor.html', data=response.json())
 
 @vendor_bp.route("/vendor/<id>", methods=['GET', 'PUT', 'DELETE'])
 @login_required
@@ -50,7 +50,7 @@ def vendorById(id):
     if response.status_code in [400, 404]:
         return redirect(url_for('vendor.vendor'))
         
-    return render_template("vendor-detail.html", data=response.json())
+    return render_template("dashboard/vendor-detail.html", data=response.json())
 
 @vendor_bp.route("/vendor-equipment/<id>", methods=['POST', 'PUT', 'DELETE'])
 @login_required
@@ -94,7 +94,7 @@ def branch():
         return make_response(response.json(), response.status_code)
         
     response = requests.get(f"{API_URL}/branch", params={'sessionKey': cookieData})
-    return render_template('branch.html', data=response.json())
+    return render_template('dashboard/branch.html', data=response.json())
 
 @vendor_bp.route("/branch/<id>", methods=['PUT', 'DELETE'])
 @login_required

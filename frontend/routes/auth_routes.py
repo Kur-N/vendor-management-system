@@ -21,7 +21,7 @@ def login():
         response = requests.post(url=f"{API_URL}/login", json=data, params={'sessionKey': cookieData})
         return make_response(jsonify(response.json()), response.status_code)
         
-    response = make_response(render_template('login.html'))
+    response = make_response(render_template('auth/login.html'))
     response.set_cookie(key='KAPITA', value=strRandom)
     return response
 
@@ -32,7 +32,7 @@ def register():
         data = request.json
         response = requests.post(f"{API_URL}/register", json=data)
         return make_response(jsonify(response.json()), response.status_code)
-    return render_template('register.html')
+    return render_template('auth/register.html')
 
 @auth_bp.route("/forgot-password", methods=["POST", "PUT"])
 @check_guest
