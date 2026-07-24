@@ -5,13 +5,13 @@ class Vendor:
     def __init__(self):
         self.__connection = ConnectMongoDB()
 
-    def selectOneVendor(self,filter):
+    def selectOneVendor(self, filter):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        data,status = self.__connection.selectOneData(collection_name=VENDOR_COLLECTION, filter=filter)
+        data, status = self.__connection.selectOneData(collection_name=VENDOR_COLLECTION, filter=filter)
         if data == None:
             result['message'] = "Vendor not found"
         elif status == False:
@@ -24,11 +24,11 @@ class Vendor:
 
     def selectVendor(self):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        data,status = self.__connection.selectData(collection_name=VENDOR_COLLECTION,filter={})
+        data, status = self.__connection.selectData(collection_name=VENDOR_COLLECTION, filter={})
         if len(data) == 0:
             result['message'] = "Vendor not found"
             result['status'] = True
@@ -40,13 +40,13 @@ class Vendor:
             result['message'] = "Berhasil mengambil semua data vendor"
         return result
     
-    def insertVendor(self,data):
+    def insertVendor(self, data):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        dataInsert,status = self.__connection.insertData(collection_name=VENDOR_COLLECTION,value=data)
+        dataInsert, status = self.__connection.insertData(collection_name=VENDOR_COLLECTION, value=data)
         if status == False:
             result['message'] = "Gagal menambahkan vendor."
         if status == True and dataInsert == True:
@@ -54,39 +54,41 @@ class Vendor:
             result['message'] = "Berhasil menambahkan vendor"
         return result
 
-    def updateVendor(self,filter,value):
+    def updateVendor(self, filter, value):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        dataUpdate,status = self.__connection.update(collection_name=VENDOR_COLLECTION,filter=filter,value=value)
+        dataUpdate, status = self.__connection.update(collection_name=VENDOR_COLLECTION, filter=filter, value=value)
         if dataUpdate == 0:
-            result['message'] = "Gagal mengupdate data vendor."
-            result['status'] = True
+            result['message'] = "Gagal mengupdate data vendor (Data tidak ditemukan)."
+            result['status'] = False 
         elif status == False:
             result['message'] = "Terjadi kesalahan saat mengupdate data vendor."
-        if status == True and dataUpdate != 0:
+            result['status'] = False
+        elif status == True and dataUpdate != 0:
             result['message'] = "Berhasil mengupdate data vendor."
             result['status'] = True
         return result
 
-    def deleteVendor(self,id):
+    def deleteVendor(self, id):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        filter = {'_id':id}
-        data,status = self.__connection.delete(collection_name=VENDOR_COLLECTION, filter=filter)
+        filter = {'_id': id}
+        data, status = self.__connection.delete(collection_name=VENDOR_COLLECTION, filter=filter)
         if status == False:
             result['message'] = "Terjadi kesalahan menghapus data vendor."
         elif data == 0:
-            result['message'] = "Gagal menghapus data vendor."
-            result['status'] = True
-        if status == True and data != 0:
+            result['message'] = "Gagal menghapus data vendor (Data tidak ditemukan)."
+            result['status'] = False 
+        elif status == True and data != 0:
             result['message'] = "Berhasil menghapus data vendor."
             result['status'] = True
+            result['data'] = data
         return result
 
 class Branch:
@@ -95,11 +97,11 @@ class Branch:
 
     def selectOneBranch(self, filter):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        data,status = self.__connection.selectOneData(collection_name=BRANCH_COLLECTION, filter=filter)
+        data, status = self.__connection.selectOneData(collection_name=BRANCH_COLLECTION, filter=filter)
         if data == None:
             result['message'] = "Cabang not found"
         elif status == False:
@@ -112,11 +114,11 @@ class Branch:
 
     def selectBranch(self):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        data,status = self.__connection.selectData(collection_name=BRANCH_COLLECTION,filter={})
+        data, status = self.__connection.selectData(collection_name=BRANCH_COLLECTION, filter={})
         if len(data) == 0:
             result['message'] = "Cabang not found"
             result['status'] = True
@@ -128,13 +130,13 @@ class Branch:
             result['message'] = "Berhasil mengambil semua data cabang"
         return result
 
-    def insertBranch(self,data):
+    def insertBranch(self, data):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        dataInsert,status = self.__connection.insertData(collection_name=BRANCH_COLLECTION,value=data)
+        dataInsert, status = self.__connection.insertData(collection_name=BRANCH_COLLECTION, value=data)
         if status == False:
             result['message'] = "Gagal menambahkan cabang."
         if status == True and dataInsert == True:
@@ -142,56 +144,59 @@ class Branch:
             result['message'] = "Berhasil menambahkan cabang"
         return result
 
-    def updateBranch(self,filter,value):
+    def updateBranch(self, filter, value):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        dataUpdate,status = self.__connection.update(collection_name=BRANCH_COLLECTION,filter=filter,value=value)
+        dataUpdate, status = self.__connection.update(collection_name=BRANCH_COLLECTION, filter=filter, value=value)
         if dataUpdate == 0:
-            result['message'] = "Gagal mengupdate data cabang."
-            result['status'] = True
+            result['message'] = "Gagal mengupdate data cabang (Data tidak ditemukan)."
+            result['status'] = False 
         elif status == False:
             result['message'] = "Terjadi kesalahan saat mengupdate data cabang."
-        if status == True and dataUpdate != 0:
+            result['status'] = False
+        elif status == True and dataUpdate != 0:
             result['message'] = "Berhasil mengupdate data cabang."
             result['status'] = True
         return result
 
-    def deleteBranch(self,id):
+    def deleteBranch(self, id):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        filter = {'_id':id}
-        data,status = self.__connection.delete(collection_name=BRANCH_COLLECTION, filter=filter)
+        filter = {'_id': id}
+        data, status = self.__connection.delete(collection_name=BRANCH_COLLECTION, filter=filter)
         if status == False:
             result['message'] = "Terjadi kesalahan menghapus data cabang."
         elif data == 0:
-            result['message'] = "Gagal menghapus data cabang."
-            result['status'] = True
-        if status == True and data != 0:
+            result['message'] = "Gagal menghapus data cabang (Data tidak ditemukan)."
+            result['status'] = False 
+        elif status == True and data != 0:
             result['message'] = "Berhasil menghapus data cabang."
             result['status'] = True
+            result['data'] = data
         return result
     
     def deleteManyBranch(self, filter):
-        result ={
-            'status':False,
-            'data':None,
-            'message':""
+        result = {
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        data,status = self.__connection.deleteMany(collection_name=BRANCH_COLLECTION, filter=filter)
+        data, status = self.__connection.deleteMany(collection_name=BRANCH_COLLECTION, filter=filter)
         if status == False:
             result['message'] = "Terjadi kesalahan menghapus data cabang."
         elif data == 0:
-            result['message'] = "Gagal menghapus data cabang."
-            result['status'] = True
-        if status == True and data != 0:
+            result['message'] = "Gagal menghapus data cabang (Data tidak ditemukan)."
+            result['status'] = False  
+        elif status == True and data != 0:
             result['message'] = "Berhasil menghapus data cabang."
             result['status'] = True
+            result['data'] = data
         return result
 
 class Bank:
@@ -200,11 +205,11 @@ class Bank:
 
     def selectOneBank(self, filter):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        data,status = self.__connection.selectOneData(collection_name=BANK_COLLECTION, filter=filter)
+        data, status = self.__connection.selectOneData(collection_name=BANK_COLLECTION, filter=filter)
         if data == None:
             result['message'] = "Bank not found"
         elif status == False:
@@ -217,11 +222,11 @@ class Bank:
 
     def selectBank(self):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        data,status = self.__connection.selectData(collection_name=BANK_COLLECTION,filter={})
+        data, status = self.__connection.selectData(collection_name=BANK_COLLECTION, filter={})
         if len(data) == 0:
             result['message'] = "Bank not found"
             result['status'] = True
@@ -233,13 +238,13 @@ class Bank:
             result['message'] = "Berhasil mengambil semua data bank"
         return result
 
-    def insertBank(self,data):
+    def insertBank(self, data):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        dataInsert,status = self.__connection.insertData(collection_name=BANK_COLLECTION,value=data)
+        dataInsert, status = self.__connection.insertData(collection_name=BANK_COLLECTION, value=data)
         if status == False:
             result['message'] = "Gagal menambahkan bank."
         if status == True and dataInsert == True:
@@ -247,38 +252,39 @@ class Bank:
             result['message'] = "Berhasil menambahkan bank"
         return result
 
-    def updateBank(self,id,value):
+    def updateBank(self, filter, value):  
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        filter = {'_id':id}
-        dataUpdate,status = self.__connection.update(collection_name=BANK_COLLECTION,filter=filter,value=value)
+        dataUpdate, status = self.__connection.update(collection_name=BANK_COLLECTION, filter=filter, value=value)
         if dataUpdate == 0:
-            result['message'] = "Gagal mengupdate data bank."
-            result['status'] = True
+            result['message'] = "Gagal mengupdate data bank (Data tidak ditemukan)."
+            result['status'] = False 
         elif status == False:
             result['message'] = "Terjadi kesalahan saat mengupdate data bank."
-        if status == True and dataUpdate != 0:
+            result['status'] = False
+        elif status == True and dataUpdate != 0:
             result['message'] = "Berhasil mengupdate data bank."
             result['status'] = True
         return result
 
-    def deleteBank(self,id):
+    def deleteBank(self, id):
         result = {
-            'status':False,
-            'data':None,
-            'message':""
+            'status': False,
+            'data': None,
+            'message': ""
         }
-        filter = {'_id':id}
-        data,status = self.__connection.delete(collection_name=BANK_COLLECTION, filter=filter)
+        filter = {'_id': id}
+        data, status = self.__connection.delete(collection_name=BANK_COLLECTION, filter=filter)
         if status == False:
             result['message'] = "Terjadi kesalahan menghapus data bank."
         elif data == 0:
-            result['message'] = "Gagal menghapus data bank."
-            result['status'] = True
-        if status == True and data != 0:
+            result['message'] = "Gagal menghapus data bank (Data tidak ditemukan)."
+            result['status'] = False  
+        elif status == True and data != 0:
             result['message'] = "Berhasil menghapus data bank."
             result['status'] = True
+            result['data'] = data
         return result
