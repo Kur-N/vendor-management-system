@@ -22,11 +22,10 @@
   </head>
   <body>
     <script>
-      // Meneruskan variabel JSON dari backend Flask ke JavaScript global
-      const vendors = JSON.parse("{{ vendor | tojson | safe}}");
-      const branches = JSON.parse("{{ branch | tojson | safe}}");
-      const users = JSON.parse("{{ user | tojson | safe}}");
-      const bank = JSON.parse("{{ bank | tojson | safe}}");
+      const vendors = "{{ vendor | tojson | safe}}";
+      const branches = "{{ branch | tojson | safe}}";
+      const users = "{{ user | tojson | safe}}";
+      const bank = "{{ bank | tojson | safe}}";
     </script>
     <!-- Memanggil file JavaScript eksternal -->
     <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
