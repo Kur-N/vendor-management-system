@@ -5,11 +5,13 @@ from bson import ObjectId
 
 from common.user import User
 from common.connectredis import RedisClient
+from common.decorator import admin_required
 
 commonUser = User()
 commonRedis = RedisClient()
 
 class UserController(Resource):
+    @admin_required
     def get(self, user_id=None):
         response = {
             'status': False,
@@ -83,7 +85,8 @@ class UserController(Resource):
         if new_user['status'] == False:
             return response, 400
         return response, 201
-    
+
+    @admin_required
     def put(self, user_id):
         response = {
             'status': False,
@@ -117,6 +120,7 @@ class UserController(Resource):
         else:
             return response, 400
 
+    @admin_required
     def delete(self, user_id):
         response = {
             'status': False,
