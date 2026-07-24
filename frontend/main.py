@@ -23,4 +23,5 @@ def index():
     return redirect(url_for('dashboard.dashboard'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # WAJIB host='0.0.0.0' agar bisa diakses dari luar container Podman
+    app.run(host='0.0.0.0', port=5000, debug=True)
