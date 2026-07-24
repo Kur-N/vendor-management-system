@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask import request
+import uuid
 import logging
 from common.user import User
 from common.connectredis import RedisClient
@@ -17,38 +18,41 @@ class UserRegistration(Resource):
         parser.add_argument('role', type=str, default="user", help="Role must be a string.")
         args = parser.parse_args()
         
-        response={
-            'message':''
+        response = {
+            'status': False,
+            'message': ''
         }
 
-        filterUsernmae = {'username':args['username']}
-        username = commonUser.selectOneUser(filter=filterUsernmae)
-        filterEmail = {'email':args['email']}
+        filterUsername = {'username': args['username']}
+        username = commonUser.selectOneUser(filter=filterUsername)
+        filterEmail = {'email': args['email']}
         email = commonUser.selectOneUser(filter=filterEmail)
         
-        if username['data'] != None and email['data']:
+        if username['data'] != None and email['data'] != None:
             response['message'] = 'Username and Email already exists.'
             return response, 400
         if username['data'] != None:
             response['message'] = 'Username already exists'
             return response, 400
-        if email['data'] !=  None:
+        if email['data'] != None:
             response['message'] = 'Email already exists'
             return response, 409
 
         hashed_password = generate_password_hash(password=args['password']).decode('utf-8')
         data = {
-            'username':args['username'],
-            'email':args['email'],
-            'password':hashed_password,
-            'role':args['role']
+            'username': args['username'],
+            'email': args['email'],
+            'password': hashed_password,
+            'role': args['role']
         }
         new_user = commonUser.insertUser(value=data)
         response['message'] = new_user['message']
 
         if new_user['status'] == False:
             return response, 400
-        response['url']='/login'
+            
+        response['status'] = True
+        response['url'] = '/login'
         return response, 201
     
 class UserLogin(Resource):
@@ -57,45 +61,53 @@ class UserLogin(Resource):
         parser.add_argument('username', required=True, help="Username is required.")
         parser.add_argument('password', required=True, help="Password is required.")
         args = parser.parse_args()
+        
         response = {
             'status': False, 
-            'message':""
+            'message': ""
         }
-        filterUser = {'username':args['username']}
+        filterUser = {'username': args['username']}
         user = commonUser.selectOneUser(filter=filterUser)
 
-        if not user['status'] or not check_password_hash(user['data']['password'], args['password']):
+        if not user['status'] or user.get('data') is None or not check_password_hash(user['data']['password'], args['password']):
             response['status'] = False
             response['message'] = 'Invalid credentials.'
-            return  response, 401
-        user = user.get('data')
+            return response, 401
+            
+        user_data = user.get('data')
 
-        sessionKey = request.args.get('sessionKey')
+        # Jika sessionKey tidak dikirim dari query param, buatkan secara otomatis
+        sessionKey = request.args.get('sessionKey') or str(uuid.uuid4())
+        
         commonRedis.hset(
             name=sessionKey,
-            mapping={'username': user.get('username'), 'role': user.get('role')}
+            mapping={'username': user_data.get('username'), 'role': user_data.get('role')}
         )
         
         response['status'] = True
         response['message'] = 'Logged in successfully'
+        response['sessionKey'] = sessionKey  # Kembalikan sessionKey agar bisa dipakai klien
         response['url'] = '/dashboard'
         return response, 200
 
 class ForgotPassword(Resource):
-    # NOTE lebih baik POST atau GET
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('checkUsername', required=True, help="checkUsername is required.")
         args = parser.parse_args()
+        
         response = {
-            'message':''
+            'status': False,
+            'message': ''
         }
 
-        filterUsername = {'username':args['checkUsername']}
+        filterUsername = {'username': args['checkUsername']}
         user = commonUser.selectOneUser(filter=filterUsername)
         if user.get('data') == None:
             response['message'] = 'Username not found.'
             return response, 404
+            
+        response['status'] = True
         response['message'] = 'Username found'
         return response, 200
     
@@ -107,16 +119,19 @@ class ForgotPassword(Resource):
 
         hashed_password = generate_password_hash(password=args['newPassword']).decode('utf-8')
         data = {
-            'password':hashed_password
+            'password': hashed_password
         }
         
         response = {
-            'message':''
+            'status': False,
+            'message': ''
         }
-        filter = {'username':args['checkUsername']}
-        user = commonUser.updateUser(filter=filter,data=data)
+        filter = {'username': args['checkUsername']}
+        user = commonUser.updateUser(filter=filter, data=data)
         response['message'] = user['message']
+        
         if user['status'] == True:
+            response['status'] = True
             response['url'] = '/login'
             return response, 200
         else:
