@@ -5,6 +5,7 @@ from controller.vendorcontroller import VendorController, VendorBranch, VendorEq
 from controller.branchcontroller import BranchController
 from controller.bankcontroller import BankController
 from controller.usercontroller import UserController, CheckPassword
+from controller.sessioncontroller import session_bp
 from config import APP_ENV
 
 app = Flask(__name__)
@@ -20,6 +21,7 @@ api.add_resource(VendorBranch,"/vendor-branch/<string:vendor_id>")
 api.add_resource(VendorEquipment,"/vendor-equipment/<string:vendor_id>")
 api.add_resource(UserController,"/user","/user/<string:user_id>")
 api.add_resource(CheckPassword,"/check-password/<string:user_id>")
+app.register_blueprint(session_bp)
 
 
 if __name__ == '__main__':
