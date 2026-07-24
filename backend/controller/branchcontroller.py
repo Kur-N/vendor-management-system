@@ -12,6 +12,7 @@ commonBranch = Branch()
 commonVendor = Vendor()
 
 class BranchController(Resource):
+    @login_required
     def get(self, branch_id=None):
         response = {
             'status': False,
@@ -36,6 +37,7 @@ class BranchController(Resource):
             return response, 200
         return response, 400
 
+    @login_required
     def post(self):
         response = {
             'status': False,
@@ -122,6 +124,7 @@ class BranchController(Resource):
             
         return {'status': True, 'message': "Berhasil menambahkan data Cabang"}, 201
 
+    @login_required
     def put(self, branch_id):
         response = {
             'status': False,
@@ -193,6 +196,7 @@ class BranchController(Resource):
             return branch, 400
         return branch, 200
 
+    @login_required
     def delete(self, branch_id):
         response = {
             'status': False,

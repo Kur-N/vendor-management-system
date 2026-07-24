@@ -11,6 +11,7 @@ commonBank = Bank()
 commonRedis = RedisClient()
 
 class BankController(Resource):
+    @login_required
     def get(self, bank_id=None):
         response = {
             'status': False,
@@ -35,6 +36,7 @@ class BankController(Resource):
             return response, 200
         return response, 400
 
+    @login_required
     def post(self):
         response = {
             'status': False,
@@ -76,6 +78,7 @@ class BankController(Resource):
             return response, 400
         return response, 201
 
+    @login_required
     def put(self, bank_id):
         response = {
             'status': False,
@@ -117,6 +120,7 @@ class BankController(Resource):
             return response, 200
         return response, 400
 
+    @login_required
     def delete(self, bank_id):
         response = {
             'status': False,

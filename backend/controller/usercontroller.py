@@ -11,20 +11,9 @@ commonUser = User()
 commonRedis = RedisClient()
 
 class UserController(Resource):
+    
     @admin_required
     def get(self, user_id=None):
-        response = {
-            'status': False,
-            'message': '',
-        }
-        sessionKey = request.args.get('sessionKey')
-        resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
-        role = commonRedis.getUserRole(sessionKey=sessionKey)
-        if not resultVerify or role != 'admin':
-            response['status'] = False
-            response['message'] = 'Unauthorized.'
-            return response, 403
-            
         if user_id is None:
             response = commonUser.selectUser()
             if response.get('status') == True:
@@ -36,20 +25,13 @@ class UserController(Resource):
         if response.get('status') == True:
             return response, 200
         return response, 400
-    
+
+    @admin_required
     def post(self):
         response = {
             'status': False,
             'message': '',
         }
-        sessionKey = request.args.get('sessionKey')
-        resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
-        role = commonRedis.getUserRole(sessionKey=sessionKey)
-        if not resultVerify or role != 'admin':
-            response['status'] = False
-            response['message'] = 'Unauthorized.'
-            return response, 403
-            
         parser = reqparse.RequestParser()
         parser.add_argument('username', required=True, help="Username is required.")
         parser.add_argument('email', required=True, help="E-mail is required.")
@@ -92,14 +74,6 @@ class UserController(Resource):
             'status': False,
             'message': '',
         }
-        sessionKey = request.args.get('sessionKey')
-        resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
-        role = commonRedis.getUserRole(sessionKey=sessionKey)
-        if not resultVerify or role != 'admin':
-            response['status'] = False
-            response['message'] = 'Unauthorized.'
-            return response, 403
-            
         parser = reqparse.RequestParser()
         parser.add_argument('username', required=True, help="Username is required.")
         parser.add_argument('email', required=True, help="E-mail is required.")
@@ -122,37 +96,19 @@ class UserController(Resource):
 
     @admin_required
     def delete(self, user_id):
-        response = {
-            'status': False,
-            'message': '',
-        }
-        sessionKey = request.args.get('sessionKey')
-        resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
-        role = commonRedis.getUserRole(sessionKey=sessionKey)
-        if not resultVerify or role != 'admin':
-            response['status'] = False
-            response['message'] = 'Unauthorized.'
-            return response, 403
-        
         user = commonUser.deleteUser(id=ObjectId(user_id))
         if user.get('status') == True:
             return user, 200
         return user, 400
 
 class CheckPassword(Resource):
+    
+    @admin_required
     def post(self, user_id):
         response = {
             'status': False,
             'message': '',
         }
-        sessionKey = request.args.get('sessionKey')
-        resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
-        role = commonRedis.getUserRole(sessionKey=sessionKey)
-        if not resultVerify or role != 'admin':
-            response['status'] = False
-            response['message'] = 'Unauthorized.'
-            return response, 403
-        
         parser = reqparse.RequestParser()
         parser.add_argument('checkPassword', required=True, help="Password is required.")
         args = parser.parse_args()

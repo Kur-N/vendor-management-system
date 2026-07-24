@@ -12,6 +12,7 @@ commonRedis = RedisClient()
 commonBranch = Branch()
 
 class VendorController(Resource):
+    @login_required
     def get(self, vendor_id=None):
         response = {
             'status': False,
@@ -44,6 +45,7 @@ class VendorController(Resource):
             return response, 200
         return response, 400
 
+    @login_required
     def post(self):
         response = {
             'status': False,
@@ -114,6 +116,7 @@ class VendorController(Resource):
             return vendor, 400
         return vendor, 201
 
+    @login_required
     def put(self, vendor_id):
         response = {
             'status': False,
@@ -191,6 +194,7 @@ class VendorController(Resource):
             return vendor, 200
         return vendor, 400
 
+    @login_required
     def delete(self, vendor_id):
         response = {
             'status': False,
@@ -220,6 +224,7 @@ class VendorController(Resource):
         return vendor, 400
     
 class VendorBranch(Resource):
+    @login_required
     def put(self, vendor_id):
         sessionKey = request.args.get('sessionKey')
         resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
@@ -264,6 +269,7 @@ class VendorBranch(Resource):
         return updateVendor, 200
 
 class VendorEquipment(Resource):
+    @login_required
     def post(self, vendor_id):
         sessionKey = request.args.get('sessionKey')
         resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
@@ -320,6 +326,7 @@ class VendorEquipment(Resource):
             return updateVendor, 400
         return updateVendor, 200
 
+    @login_required
     def put(self, vendor_id):
         sessionKey = request.args.get('sessionKey')
         resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
@@ -364,6 +371,7 @@ class VendorEquipment(Resource):
             return updateVendor, 200
         return updateVendor, 400
 
+    @login_required
     def delete(self, vendor_id):
         sessionKey = request.args.get('sessionKey')
         resultVerify = commonRedis.verifySession(sessionKey=sessionKey)
