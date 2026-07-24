@@ -6,6 +6,7 @@ import pytz
 import logging
 from common.vendor import Vendor, Branch
 from common.connectredis import RedisClient
+from common.decorator import login_required
 
 commonVendor = Vendor()
 commonRedis = RedisClient()
