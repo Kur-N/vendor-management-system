@@ -21,7 +21,7 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         cookieData = request.cookies.get('KAPITA')
         if not cookieData or not commonRedis.checkCookieData(cookieData=cookieData):
-            return redirect(url_for('login'))
+            return redirect(url_for('auth.login'))
         
         sessionData, status = commonRedis.getCookieData(cookieData=cookieData)
         if not status or sessionData.get('role') != 'admin':
@@ -36,6 +36,6 @@ def check_guest(f):
     def decorated_function(*args, **kwargs):
         cookieData = request.cookies.get('KAPITA')
         if cookieData and commonRedis.checkCookieData(cookieData=cookieData):
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('dashboard.dashboard'))
         return f(*args, **kwargs)
     return decorated_function
