@@ -106,7 +106,9 @@ podman-compose down
 
 ```text
 ├── backend/            # Source code API (Flask-RESTful)
-├── frontend/           # Source code Web UI (Flask + Webix HTML)
+├── frontend/           # Source code Web UI (Flask + Webix)
+│   ├── static/         # File JavaScript modular & CSS
+│   └── templates/      # File HTML templates (dashboard, dll)
 ├── docker-compose.yml  # Orkestrasi seluruh container
 ├── .env.example        # Template untuk environment variables
 └── README.md           # Dokumentasi proyek
