@@ -5,10 +5,17 @@ Ini adalah aplikasi Vendor Management System yang dibangun menggunakan arsitektu
 ## 🛠️ Tech Stack
 
 - **Backend:** Python 3.9, Flask, Flask-RESTful, Flask-Bcrypt, Gunicorn
-- **Frontend:** Python 3.9, Flask (Routing/Session Handling), Webix, Gunicorn
+- **Frontend:** Python 3.9, Flask (Routing/Session Handling), Webix (UI Library - _Self-hosted locally_), Material Design Icons (MDI), Gunicorn
 - **Database:** MongoDB
 - **Caching & Session:** Redis
 - **Infrastructure:** Docker & Docker Compose / Podman
+
+---
+
+## 🌟 Fitur Tambahan & Manajemen Aset (Pembaruan)
+
+- **Aset Lokal Mandiri (_Offline-Ready_):** Seluruh file inti antarmuka (Webix UI & MDI) disimpan secara lokal di `frontend/static/` untuk memastikan ketersediaan tinggi dan mencegah error DNS (`net::ERR_NAME_NOT_RESOLVED`) akibat pemblokiran pihak ketiga atau _Tracking Prevention_ pada _browser_.
+- **Modular Frontend Scripts:** Pemisahan logika antarmuka secara modular (seperti `branch.js` dan `vendor.js`) dengan ruang lingkup variabel yang terisolasi (_scope isolation_).
 
 ---
 
@@ -31,7 +38,7 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan aplikasi secara lokal di me
 Buka terminal Anda (disarankan menggunakan terminal Linux/WSL untuk performa terbaik) dan jalankan perintah berikut:
 
 ```bash
-git clone https://github.com/Kur-N/vendor-management-system.git
+git clone [https://github.com/Kur-N/vendor-management-system.git](https://github.com/Kur-N/vendor-management-system.git)
 cd vendor-management-system
 ```
 
@@ -105,11 +112,12 @@ podman-compose down
 ## 📂 Struktur Direktori Utama
 
 ```text
-├── backend/            # Source code API (Flask-RESTful)
-├── frontend/           # Source code Web UI (Flask + Webix)
-│   ├── static/         # File JavaScript modular & CSS
+vms-project/
+├── backend/            # Source code API (Flask-RESTful) & README.md Backend
+├── frontend/           # Source code Web UI (Flask + Webix) & README.md Frontend
+│   ├── static/         # Aset lokal (webix.min.js/css) & Skrip JS modular
 │   └── templates/      # File HTML templates (dashboard, dll)
 ├── docker-compose.yml  # Orkestrasi seluruh container
 ├── .env.example        # Template untuk environment variables
-└── README.md           # Dokumentasi proyek
+└── README.md           # Dokumentasi utama proyek (File ini)
 ```
