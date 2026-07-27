@@ -31,16 +31,16 @@
     font-weight: bold;
     margin-bottom: 10px;
     white-space: nowrap; /* Jangan buat teks melanjutkan ke baris berikutnya */
-    overflow: hidden;    /* Sembunyikan teks yang melebihi */
+    overflow: hidden; /* Sembunyikan teks yang melebihi */
     text-overflow: ellipsis; /* Tambahkan '...' pada teks yang terpotong */
-    width: 100%;  
+    width: 100%;
 }
 
 .info {
     font-size: 0.95em;
     margin-bottom: 5px;
-    overflow: hidden;    /* Sembunyikan teks yang melebihi */
+    overflow: hidden; /* Sembunyikan teks yang melebihi */
     text-overflow: ellipsis; /* Tambahkan '...' pada teks yang terpotong */
     white-space: nowrap; /* Jangan buat teks melanjutkan ke baris berikutnya */
-    width: 100%; 
+    width: 100%;
 }
